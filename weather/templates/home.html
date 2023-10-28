@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Info</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #3498db;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s;
+            max-width: 600px; /* Adjusted container width */
+            margin: 20px auto; /* Slightly lowered the container */
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-title {
+            font-size: 3.5rem; /* Bigger font size */
+            color: #3498db;
+            text-align: center;
+            margin-top: 10px; /* Adjusted margin to move it higher */
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .alert {
+            background-color: #e74c3c;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .alert-success {
+            background-color: #2ecc71;
+        }
+
+        .weather-icon {
+            display: block;
+            margin: 20px auto;
+        }
+
+        .weather-info-title {
+            text-align: center; /* Centered "Weather Information" */
+            font-size: 17px; /* A little bit bigger */
+            margin-top: 8px; /* Adjusted margin */
+            color: #000; /* Black color */
+        }
+
+        .created-by {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 20px;
+            color: #fff; /* White color */
+        }
+
+        /* Hide weather info by default */
+        .weather-info {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Weather Portal</h1>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="city" placeholder="Enter city name" required>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Get Weather</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                {% if error_message %}
+                    <div class="alert">
+                        {{ error_message }}
+                    </div>
+                {% endif %}
+                {% if weather_info %}
+                <div class="card mt-3 weather-info">
+                  <div class="card-body">
+                      <h3 class="weather-info-title"> {{ weather_info.weather_stat }}</h3>
+                      <h2 class="card-title text-muted">{{ weather_info.location.upper }}</h2>
+                      <hr>
+                      <div class="weather-details">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <p class="card-text">
+                                      <i class="fas fa-thermometer-half"></i> Temperature: {{ weather_info.temperature }}°C
+                                  </p>
+                                  <p class="card-text">
+                                      <i class="fas fa-cloud"></i> Description: {{ weather_info.weather_description }}
+                                  </p>
+                              </div>
+                              <div class="col-md-6">
+                                  <p class="card-text">
+                                      <i class="fas fa-tint"></i> Humidity: {{ weather_info.humidity }}%
+                                  </p>
+                                  <p class="card-text">
+                                      <i class="fas fa-wind"></i> Wind Speed: {{ weather_info.wind_speed }} m/s
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Added Created by text -->
+    <div class="created-by">
+        Created by: Rabet Karma
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Show weather info when available
+        {% if weather_info %}
+        document.querySelector(".weather-info").style.display = "block";
+        {% endif %}
+    </script>
+</body>
+</html>

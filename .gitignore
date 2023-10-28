@@ -1,0 +1,14 @@
+# Ignore compiled Python files
+__pycache__/
+*.pyc
+
+# Ignore environment-specific settings
+.env
+try.py
+class_weather.py
+weather_data.py
+
+# Ignore IDE and text editor settings
+.vscode/
+*.idea/
+*.pyc
